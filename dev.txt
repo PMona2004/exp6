@@ -189,7 +189,7 @@ pipeline {
         }
     }
 }
-
+exp 10 check MAVEN@3 JDK 1.17
 exp 11,12 releaeses artifact + , Stages + empty job give name THEN 
 Go to “pre deployment conditions” by clicking on Stage 
 Select Manual only
