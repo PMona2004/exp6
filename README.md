@@ -83,21 +83,21 @@ hosts.ini
 [local]
 localhost ansible_connection=local
 
-setup.yaml
+setup.yaml:
 ---
 - name: Basic Server Setup
-hosts: localhost
-become: yes 
+  hosts: localhost
+  become: yes 
 
-tasks:
-- name: Update apt cache
-apt:
-update_cache: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
 
-- name: Install curl
-apt:
-name: curl
-state: present
+    - name: Install curl
+      apt:
+        name: curl
+        state: present
 
 ansible-playbook -i hosts.ini setup.yaml --
 ask-become-pass
