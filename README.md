@@ -109,15 +109,17 @@ Go to /var/lib/jenkins/workspace/ :
 sudo nano deploy.yaml
 ---
 - name: Deploy Artifact to Localhost
-hosts: localhost
-become: true
-become_user: student-devops //exam?
-become_method: su
-tasks:
-- name: Copy the artifact to the target location
-copy:
-src: "/var/lib/jenkins/workspace/maven/target/hello-maven-1.0-SNAPSHOT.jar"
-dest: "/home/student-devops/Desktop/t.jar"
+  hosts: localhost
+  become: true
+  become_user: student-devops
+  become_method: su
+
+  tasks:
+    - name: Copy the artifact to the target location
+      copy:
+        src: "/var/lib/jenkins/workspace/maven/target/hello-maven-1.0-SNAPSHOT.jar"
+        dest: "/home/student-devops/Desktop/t.jar"
+
 
 sudo nano hosts.ini
 Put the following contents into it :
@@ -127,46 +129,40 @@ localhost ansible_connection=local
 Add the following script in pipeline script :
 
 pipeline {
-    agent any
+ agent any
+ stages {
+     stage('Checkout') {
+         steps {
+             git branch: 'main', url:"https://github.com/PMona2004/Mymaven.git"
+             }
+      }
+     stage("Build") {
+         steps {
+             sh "mvn clean package"
+             }
+     }
+     stage("Test") {
+         steps {
+             sh "mvn test"
+             }
+     }
+     stage('Archive Artifacts') {
+         steps {
+             archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true 
+            } 
+     }
+     stage('Deploy') {
+         steps {
+             sh """ 
+                export ANSIBLE_HOST_KEY_CHECKING=False 
+                ansible-playbook -i /var/lib/jenkins/workspace/maven2/hosts.ini /var/lib/jenkins/workspace/maven2/deploy.yaml --extra-vars='ansible_become_pass=login@123' 
+                """ 
+            } 
+        } 
+ }
+} 
 
-    stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main', url: 'git@github.com:PMona2004/hello-maven.git'
-            }
-        }
 
-        stage('Build') {
-            steps {
-                sh 'mvn clean package'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-        }
-
-        stage('Archive Artifacts') {
-            steps {
-                archiveArtifacts artifacts: '**/target/*.jar', allowEmptyArchive: true
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                sh '''
-                    export ANSIBLE_HOST_KEY_CHECKING=False
-                    ansible-playbook -i /var/lib/jenkins/workspace/maven2/hosts.ini \
-                    /var/lib/jenkins/workspace/maven2/deploy.yaml \
-                    --extra-vars='ansible_become_pass=login@123'
-                '''
-                // Enter student password above (login@123)
-            }
-        }
-    }
-}
 
 exp 11,12 releaeses artifact + , Stages + empty job give name THEN 
 Go to “pre deployment conditions” by clicking on Stage 
