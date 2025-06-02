@@ -13,14 +13,11 @@ mvn clean
 Change JDK version ( 17, 21 )
 sudo apt update
 1. sudo apt install openjdk-21-jdk -y
-2. sudo wget -O /usr/share/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-
-stable/jenkins.io-2023.key
-3. echo &quot;deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]
-https://pkg.jenkins.io/debian-stable binary/&quot; | sudo tee
-/etc/apt/sources.list.d/jenkins.list &gt; /dev/null
-4. sudo apt update
-5. sudo apt install jenkins -y
-6. sudo systemctl status jenkins
+2. sudo wget -O /usr/share/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+3. echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
+5. sudo apt update
+6. sudo apt install jenkins -y
+7. sudo systemctl status jenkins
    (sudo systemctl stop,restart,start jenkins)
  
 
@@ -49,7 +46,7 @@ ssh -T git@github.com
 // Create a new repository on github using CURL, you will have to generate tokens by
 going to Settings - Developor settings - Tokens classic -  Generate new token
 
-echo &quot;# hello-maven&quot; &gt;&gt; README.md # Create README file
+echo "# hello-maven" >> README.md # Create README file
 git init # Initialize Git repo
 git add . # Stage ALL files
 git commit -m &quot;first commit&quot; # Commit everything
@@ -57,49 +54,27 @@ git branch -M main # Rename branch to &#39;main&#39;
 git remote add origin git@github.com:azadCMRIT/hello-maven.git # Add GitHub remote
 git push -u origin main # Push to GitHub
 
+
 pipeline {
-
-agent any
-
-stages {
-
-stage("Checkout&#39;) {
-
-steps {
-
-git branch: &#39;main&#39;, url:"https://github.com/azadCMRIT/hello-maven.git" 
-
-}
-
-}
-
-stage("Build") {
-
-steps {
-
-
-sh "mvn clean package"
-
-}
-
-}
-
-stage("Test" {
-
-steps {
-
-
-sh "mvn test"
-
-}
-
-}
-
-
-
-}
-
-}
+ agent any
+ stages {
+     stage('Checkout') {
+         steps {
+             git branch: 'main', url:"https://github.com/PMona2004/Mymaven.git"
+             }
+      }
+     stage("Build") {
+         steps {
+             sh "mvn clean package"
+             }
+     }
+     stage("Test") {
+         steps {
+             sh "mvn test"
+             }
+      }
+ }
+} 
 exp 7
 
 hosts.ini
