@@ -155,7 +155,7 @@ pipeline {
          steps {
              sh """ 
                 export ANSIBLE_HOST_KEY_CHECKING=False 
-                ansible-playbook -i /var/lib/jenkins/workspace/maven2/hosts.ini /var/lib/jenkins/workspace/maven2/deploy.yaml --extra-vars='ansible_become_pass=login@123' 
+                ansible-playbook -i /var/lib/jenkins/workspace/Mymaven/hosts.ini /var/lib/jenkins/workspace/Mymaven/deploy.yaml --extra-vars='ansible_become_pass=mona@123' 
                 """ 
             } 
         } 
