@@ -21,6 +21,7 @@ https://pkg.jenkins.io/debian-stable binary/&quot; | sudo tee
 4. sudo apt update
 5. sudo apt install jenkins -y
 6. sudo systemctl status jenkins
+   (sudo systemctl stop,restart,start jenkins)
  
 
 get- sudo cat /var/lib/jenkins/secrets/initialAdminPassword
